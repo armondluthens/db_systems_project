@@ -1,0 +1,40 @@
+Relational Model:
+-----------------------------------------------------------------------------------------
+								Customer
+						cid (P) | first_name | last_name | phone
+-----------------------------------------------------------------------------------------
+
+								Reservation
+reservation_id (P) | cid (F) | room_id (F) | reservation_date | check_in_date | check_out_date | checked_in_status | checked_out_status | transaction_id (F)
+-----------------------------------------------------------------------------------------
+								Transaction
+				transaction_id (P) | amount | payment_method | payment_date | refund_amount
+-----------------------------------------------------------------------------------------
+								Employee
+						employee_id (P) | first_name | last_name | position
+-----------------------------------------------------------------------------------------							
+								House_Keeping
+		room_id (P)| date_of_service (P) | assigned_by_id (F) | assigned_to_id (F) | description | completion_status
+
+-----------------------------------------------------------------------------------------
+								Room
+				room_id (P) | occupied_status | room_type
+-----------------------------------------------------------------------------------------
+								Room_Type
+						room_type (P) | no_people | cost
+
+Required queries to support
+a. view the currently occupied rooms 
+b. view the room types and costs that are still available
+c. calculate the total cost for a guest at checkout time
+d. list future reservations for a guest
+e. list house-keeping assignments
+
+
+Required transactions to support
+a. check-in a guest (must be day of reservation)
+b. check-out a guest (if the checkout is early then calculate the refund to the guest)
+c. make a reservation
+d. cancel a reservation (denied if same day)
+e. record that a room has been serviced for the day; no room should be serviced
+twice in the same day
