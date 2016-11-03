@@ -3,7 +3,6 @@ Relational Model:
 								Customer
 						cid (P) | first_name | last_name | phone
 -----------------------------------------------------------------------------------------
-
 								Reservation
 reservation_id (P) | cid (F) | room_id (F) | reservation_date | check_in_date | check_out_date | checked_in_status | checked_out_status | transaction_id (F)
 -----------------------------------------------------------------------------------------
@@ -12,10 +11,9 @@ reservation_id (P) | cid (F) | room_id (F) | reservation_date | check_in_date | 
 -----------------------------------------------------------------------------------------
 								Employee
 						employee_id (P) | first_name | last_name | position
------------------------------------------------------------------------------------------							
+-----------------------------------------------------------------------------------------
 								House_Keeping
 		room_id (P)| date_of_service (P) | assigned_by_id (F) | assigned_to_id (F) | description | completion_status
-
 -----------------------------------------------------------------------------------------
 								Room
 				room_id (P) | occupied_status | room_type
@@ -24,7 +22,7 @@ reservation_id (P) | cid (F) | room_id (F) | reservation_date | check_in_date | 
 						room_type (P) | no_people | cost
 
 Required queries to support
-a. view the currently occupied rooms 
+a. view the currently occupied rooms
 b. view the room types and costs that are still available
 c. calculate the total cost for a guest at checkout time
 d. list future reservations for a guest
