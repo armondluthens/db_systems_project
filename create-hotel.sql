@@ -40,7 +40,7 @@ create table Reservation (
   check_out_date timestamp,
   checked_in_status boolean,
   checked_out_status boolean,
-  transaction_id int REFERENCES Transaction
+  transaction_id int REFERENCES Transaction,
   PRIMARY KEY(cid, room_id, reservation_date)
 );
 
