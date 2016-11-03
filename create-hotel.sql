@@ -11,12 +11,6 @@ create table Room_Type (
   cost int
 );
 
-create table Room (
-  room_id int PRIMARY KEY,
-  occupied_status boolean,
-  room_type int REFERENCES Room_Type
-);
-
 create table Transaction (
   transaction_id int PRIMARY KEY,
   amount int,
@@ -32,16 +26,22 @@ create table Employee (
   position varchar(20)
 );
 
+create table Room (
+  room_id int PRIMARY KEY,
+  occupied_status boolean,
+  room_type int REFERENCES Room_Type
+);
+
 create table Reservation (
-    reservation_id int PRIMARY KEY,
-   cid int REFERENCES Customer,
-   room_id int REFERENCES Room,
-   reservation_date timestamp,
-   check_in_date timestamp,
-   check_out_date timestamp,
-   checked_in_status boolean,
-   checked_out_status boolean,
-   transaction_id int REFERENCES Transaction
+  cid int REFERENCES Customer,
+  room_id int REFERENCES Room,
+  reservation_date timestamp,
+  check_in_date timestamp,
+  check_out_date timestamp,
+  checked_in_status boolean,
+  checked_out_status boolean,
+  transaction_id int REFERENCES Transaction
+  PRIMARY KEY(cid, room_id, reservation_date)
 );
 
 create table House_Keeping (
