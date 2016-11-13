@@ -51,6 +51,14 @@ class hotel_mgmt_employee:
     def mark_serviced(self):
 
 
+
+#Required queries to support
+#a. view the currently occupied rooms
+#b. view the room types and costs that are still available
+#c. calculate the total cost for a guest at checkout time
+#d. list future reservations for a guest
+#e. list house-keeping assignments
+
 class hotel_mgmt_customer:
 
     def __init__(self, login_id=None):
@@ -59,10 +67,14 @@ class hotel_mgmt_customer:
     def login(self):
 
     def rooms_available(self):
-
+    # SELECT room_id FROM Room WHERE occupied_status='1';
+    
     def cost_at_checkout(self):
+    # tran_id = "SELECT transaction_id FROM Reservation where cid=? and room_id=? and reservation_date=?"
+    #
 
     def my_reservations(self):
+    # SELECT * FROM Reservation where cid=? and room_id=? and reservation_date=?
 
     def reserve(self):
 
