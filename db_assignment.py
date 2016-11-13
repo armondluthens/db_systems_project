@@ -11,6 +11,7 @@ class hotel_mgmt_control:
         self.schema = []
 
     def read_schema(self):
+        print("Reading schema from 'create-hotel.sql'")
         with open("create-hotel.sql") as f:
             lines = f.readlines()
             lines = [i.strip() for i in lines]
