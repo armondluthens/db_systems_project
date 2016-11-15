@@ -67,10 +67,17 @@ class hotel_mgmt_customer:
     def login(self):
 
     def rooms_available(self):
-    # SELECT room_id FROM Room WHERE occupied_status='1';
+    # SELECT room_id FROM Room WHERE occupied_status='0';
     
     def cost_at_checkout(self):
-    # tran_id = "SELECT transaction_id FROM Reservation where cid=? and room_id=? and reservation_date=?"
+    # tran_id = "SELECT transaction_id, DATE_DIFF(check_out_date, NOW()), as num_days_early, room_id FROM Reservation where cid=? and room_id=? and reservation_date=?"
+    # if(num_days_early > 0){
+    #   rType = SELECT room_type FROM Room where room_type= "type returned from previous query"
+    #   dailyCost = SELECT cost FROM Room_Type WHERE room_type = "room_type from previous query"
+    #   refundAmount = dailyCost*numDaysEarly
+    #   update refund days in transaction table
+    # }
+    # SELECT * from Transaction WHERE transaction_id="tran_id"
     #
 
     def my_reservations(self):
