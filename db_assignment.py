@@ -264,10 +264,12 @@ class hotel_mgmt_customer:
                 return None
 
     def rooms_available(self):
+    #SELECT * FROM Room WHERE occupied_status=0
 
     def cost_at_checkout(self):
 
     def my_reservations(self):
+    #SELECT * FROM Reservation WHERE 
 
     def reserve(self):
 
