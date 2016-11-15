@@ -272,6 +272,7 @@ class hotel_mgmt_customer:
                 return None
 
     def rooms_available(self):
+
         if self.logged_in:
             try:
                 self.controller.cnx.start_transaction()
@@ -300,6 +301,7 @@ class hotel_mgmt_customer:
                 except mysql.connector.InternalError as e:
                     pass
                 return None
+
 
     def cost_at_checkout(self):
         if self.logged_in:
