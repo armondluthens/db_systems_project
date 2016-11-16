@@ -229,14 +229,6 @@ class hotel_mgmt_employee:
 
 
 
-
-#Required queries to support
-#a. view the currently occupied rooms
-#b. view the room types and costs that are still available
-#c. calculate the total cost for a guest at checkout time
-#d. list future reservations for a guest
-#e. list house-keeping assignments
-
 class hotel_mgmt_customer:
 
     def __init__(self, controller, login_id=None):
@@ -279,25 +271,8 @@ class hotel_mgmt_customer:
                     pass
                 return None
 
+
     def rooms_available(self):
-
-    # SELECT room_id FROM Room WHERE occupied_status='0';
-    
-
-    def cost_at_checkout(self):
-    # tran_id = "SELECT transaction_id, DATE_DIFF(check_out_date, NOW()), as num_days_early, room_id FROM Reservation where cid=? and room_id=? and reservation_date=?"
-    # if(num_days_early > 0){
-    #   rType = SELECT room_type FROM Room where room_type= "type returned from previous query"
-    #   dailyCost = SELECT cost FROM Room_Type WHERE room_type = "room_type from previous query"
-    #   refundAmount = dailyCost*numDaysEarly
-    #   update refund days in transaction table
-    # }
-    # SELECT * from Transaction WHERE transaction_id="tran_id"
-    #
-
-    def my_reservations(self):
-
-    # SELECT * FROM Reservation where cid=? and room_id=? and reservation_date=?
 
         if self.logged_in:
             try:
@@ -330,6 +305,16 @@ class hotel_mgmt_customer:
 
 
     def cost_at_checkout(self):
+        #def cost_at_checkout(self):
+        # tran_id = "SELECT transaction_id, DATE_DIFF(check_out_date, NOW()), as    num_days_early, room_id FROM Reservation where cid=? and room_id=? and reservation_date=?"
+        # if(num_days_early > 0){
+        #   rType = SELECT room_type FROM Room where room_type= "type returned from previous query"
+        #   dailyCost = SELECT cost FROM Room_Type WHERE room_type = "room_type from previous query"
+        #   refundAmount = dailyCost*numDaysEarly
+        #   update refund days in transaction table
+        # }
+        # SELECT * from Transaction WHERE transaction_id="tran_id"
+        
         if self.logged_in:
             try:
                 self.controller.cnx.start_transaction()
@@ -430,3 +415,32 @@ class hotel_mgmt_customer:
                 return None
 
     def cancel(self):
+
+        if self.logged_in:
+            try:
+                self.controller.cnx.start_transaction()
+                cur = controller.cnx.cursor()
+
+                cur.execute("select date(reservation_date) from Reservation where cid = {};".format(self.login_id))
+                date_of_reservation = cur.fetchall()
+
+                cur.execute("select date();")
+                current_date = cur.fetchall()
+                
+                
+                if date_of_reservation != current_date:
+                    print "cannot cancel reservation the same day it was made"
+                else:
+                    #remove record
+                    cur.execute("delete from Reservation where cid = {};".format(self.login_id))
+                
+                self.cnx.commit()
+ 
+            
+            except mysql.connector.InternalError as e:
+                print "failed to cancel reservation: ", e
+                try:
+                    self.cnx.rollback()
+                except mysql.connector.InternalError as e:
+                    pass
+                return None
