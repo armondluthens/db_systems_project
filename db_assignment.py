@@ -63,7 +63,6 @@ class hotel_mgmt_control:
                         curs.execute("insert into {} values ({});".format(table, l))
                     except:
                         print "entry exists"
-        print("Hit")
         self.cnx.commit()
 
 
@@ -204,7 +203,7 @@ class hotel_mgmt_employee:
                 else:
                     res = res[0]
 
-                cur.execute("update Reservation set check_out_status = 1, check_out_date = NOW() where cid = {} and room_id = {} and reservation_date = '{}';".format(res[0], res[1], res[2]))
+                cur.execute("update Reservation set checked_out_status=1, check_out_date = NOW() where cid = {} and room_id = {} and reservation_date = '{}';".format(res[0], res[1], res[2]))
 
                 print("Reservation Checked Out: ", res)
                 self.controller.cnx.commit()
