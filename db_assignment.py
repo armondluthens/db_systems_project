@@ -244,6 +244,9 @@ class hotel_mgmt_employee:
 
                 cur.execute("update House_Keeping set completion_status=1, description='{}' where room_id={} and date_of_service='{}';".format(discript, res[0], res[1]))
 
+                cur.execute("select * from House_Keeping where room_id = {} and assigned_to_id = {} and date_of_service='{}';".format(res[0], assigned_id, res[1]))
+                res = cur.fetchall()
+
                 print("Set Serviced: ", res)
                 self.controller.cnx.commit()
                 return res
