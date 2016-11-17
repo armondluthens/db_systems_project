@@ -51,10 +51,9 @@ class hotel_mgmt_control:
         curs = self.cnx.cursor()
         lines = []
         table = ""
-        with open("dummy_data.csv", "r") as f:
+        with open("dummy-data.csv", "r") as f:
             lines = f.readlines()
         lines = [l.strip() for l in lines]
-        print(lines)
         for l in lines:
             if l[0] == "/":
                 table = l[2:]
