@@ -61,7 +61,7 @@ class hotel_mgmt_control:
                 if self.__repsint__(l[0]):
                     try:
                         curs.execute("insert into {} values ({});".format(table, l))
-                    except mysql.connector.InternalError as e:
+                    except:
                         print "entry exists"
         print("Hit")
         self.cnx.commit()
