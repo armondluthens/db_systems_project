@@ -307,7 +307,7 @@ class hotel_mgmt_customer:
             try:
                 self.controller.cnx.start_transaction()
                 cur = self.controller.cnx.cursor()
-                cur.execute("select * from Rooms where occupied_status = 0 group by room_type;")
+                cur.execute("select * from Room where occupied_status = 0 group by room_type;")
                 res = cur.fetchall()
                 rooms = []
 
