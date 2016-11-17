@@ -244,10 +244,7 @@ class hotel_mgmt_employee:
 
                 cur.execute("update House_Keeping set completion_status=1, description='{}' where room_id={} and date_of_service='{}';".format(discript, res[0], res[1]))
 
-                cur.execute("select * from House_Keeping where room_id = {} and assigned_to_id = {} and date_of_service='{}';".format(room, assigned_id, res[1]))
-                res = cur.fetchall()
-
-                print("Set Serviced: ", res)
+                print("Set Serviced: ", room, assigned_id)
                 self.controller.cnx.commit()
                 return res
 
@@ -495,12 +492,21 @@ if __name__ == '__main__':
     ctrl.create_tables()
     ctrl.input_dummy_data()
     print("Controller Initialized")
+
     mgr = hotel_mgmt_employee(ctrl,1)
     print("Employee Initialized")
-    print("mgr.rooms_occupied:", mgr.rooms_occupied())
-    print("mgr.housekeeping:", mgr.housekeeping())
-    print("mgr.check_in:", mgr.check_in(1,1))
-    print("mgr.check_out:", mgr.check_out(1,1))
-    print("mgr.mark_serviced:", mgr.mark_serviced(5,5,"Cleaned the room"))
+
+    # print("mgr.rooms_occupied:", mgr.rooms_occupied())
+    # print("mgr.housekeeping:", mgr.housekeeping())
+    # print("mgr.check_in:", mgr.check_in(1,1))
+    # print("mgr.check_out:", mgr.check_out(1,1))
+    # print("mgr.mark_serviced:", mgr.mark_serviced(5,5,"Cleaned the room"))
+
     print("Customer Initialized")
     cust = hotel_mgmt_customer(ctrl,1)
+
+    print("cust.rooms_available:", cust.rooms_available())
+    print("cust.cost_at_checkout:", cust.cost_at_checkout())
+    print("cust.my_reservations:", cust.my_reservations())
+    print("cust.reserve:", cust.reserve())
+    print("cust.cancel:", cust.cancel())
