@@ -258,7 +258,7 @@ class hotel_mgmt_customer:
         self.login()
 
     def login(self):
-        if login_id == None:
+        if self.login_id == None:
             raise ValueError("Customer ID can't be empty!")
         else:
             try:
