@@ -10,10 +10,6 @@ class hotel_mgmt_control:
             user='bpratherhuff', host='dbdev.divms.uiowa.edu', database='db_bpratherhuff', password='02btYCnf1=EY')
         self.schema = []
 
-        self.read_schema()
-        self.create_tables()
-        self.input_dummy_data()
-
     def read_schema(self):
         """
         Read schema from 'create-hotel.sql'
@@ -482,5 +478,8 @@ class hotel_mgmt_customer:
 
 if __name__ == '__main__':
     ctrl = hotel_mgmt_control()
+    ctrl.read_schema()
+    ctrl.create_tables()
+    #ctrl.input_dummy_data()
     mgr = hotel_mgmt_employee(ctrl)
     cust = hotel_mgmt_customer(ctrl,1)
