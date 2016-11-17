@@ -55,11 +55,12 @@ class hotel_mgmt_control:
             lines = f.readlines()
         lines = [l.strip() for l in lines]
         for l in lines:
-            if l[0] == "/":
-                table = l[2:]
-            if self.__repsint__(l[0]):
-                print("hit")
-                curs.execute("insert into {} values ({});".format(table, l))
+            if l != "":
+                if l[0] == "/":
+                    table = l[2:]
+                if self.__repsint__(l[0]):
+                    print("hit")
+                    curs.execute("insert into {} values ({});".format(table, l))
 
 
     def close(self):
