@@ -43,11 +43,11 @@ class hotel_mgmt_control:
                 print("OK")
 
     def __repsint__(self, s):
-    try:
-        int(s)
-        return True
-    except ValueError:
-        return False
+        try:
+            int(s)
+            return True
+        except ValueError:
+            return False
 
 
     def input_dummy_data(self):
