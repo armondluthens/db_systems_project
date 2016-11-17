@@ -59,8 +59,11 @@ class hotel_mgmt_control:
                 if l[0] == "/":
                     table = l[2:]
                 if self.__repsint__(l[0]):
-                    print("hit")
-                    curs.execute("insert into {} values ({});".format(table, l))
+                    try:
+                        curs.execute("insert into {} values ({});".format(table, l))
+                    except mysql.connector.InternalError as e:
+                        print "entry exists"
+        self.cnx.commit()
 
 
     def close(self):
