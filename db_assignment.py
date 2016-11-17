@@ -33,7 +33,7 @@ class hotel_mgmt_control:
         curs = self.cnx.cursor()
         for t in self.schema:
             try:
-                print("Creating table {}: ".format(name))
+                print("Creating tables")
                 curs.execute(t)
             except mysql.connector.Error as err:
                 if err.errno == errorcode.ER_TABLE_EXISTS_ERROR:
