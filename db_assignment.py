@@ -55,7 +55,7 @@ class hotel_mgmt_control:
         curs = self.cnx.cursor()
         lines = []
         table = ""
-        with open("dummy_data.csv", "w") as f:
+        with open("dummy_data.csv", "r") as f:
             lines = f.readlines()
         lines = [l.strip() for l in lines]
         for l in lines:
