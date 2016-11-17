@@ -124,6 +124,7 @@ class hotel_mgmt_employee:
                 res = cur.fetchall()
                 print("Rooms Occupied: ", res)
                 self.controller.cnx.commit()
+                return res
 
             except mysql.connector.InternalError as e:
                 print "failed to fetch rooms occupied: ", e
@@ -142,6 +143,7 @@ class hotel_mgmt_employee:
                 res = cur.fetchall()
                 print("Housekeeping Assignments: ", res)
                 self.controller.cnx.commit()
+                return res
 
             except mysql.connector.InternalError as e:
                 print "failed to fetch hosekeeping assignments: ", e
@@ -160,6 +162,7 @@ class hotel_mgmt_employee:
                 res = cur.fetchall()
                 if len(res) == 0:
                     print("Reservation Not Found")
+                    self.controller.cnx.commit()
                     return None
                 elif len(res) > 1:
                     print("Multiple Reservations Found, Choose Index of Reservation")
@@ -193,6 +196,7 @@ class hotel_mgmt_employee:
                 res = cur.fetchall()
                 if len(res) == 0:
                     print("Reservation Not Found")
+                    self.controller.cnx.commit()
                     return None
                 elif len(res) > 1:
                     print("Multiple Reservations Found, Choose Index of Reservation.")
@@ -227,6 +231,7 @@ class hotel_mgmt_employee:
 
                 if len(res) == 0:
                     print("No Assignments Found")
+                    self.controller.cnx.commit()
                     return None
                 if len(res) > 1:
                     print("Multiple Assignments found, select index.")
@@ -486,6 +491,7 @@ if __name__ == '__main__':
     ctrl.read_schema()
     ctrl.create_tables()
     ctrl.input_dummy_data()
+    print("Controller Initialized")
     mgr = hotel_mgmt_employee(ctrl,1)
     mgr.rooms_occupied()
     mgr.housekeeping()
