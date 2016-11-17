@@ -242,8 +242,7 @@ class hotel_mgmt_employee:
                 else:
                     res = res[0]
 
-                print("Hit")
-                cur.execute("update House_Keeping set completion_status = 1, description = '{}' where room_id = {} and date_of_service = {};".format(discript, res[0], res[1]))
+                cur.execute("update House_Keeping set completion_status=1, description='{}' where room_id={} and date_of_service='{}';".format(discript, res[0], res[1]))
 
                 print("Set Serviced: ", res)
                 self.controller.cnx.commit()
