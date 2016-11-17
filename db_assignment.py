@@ -42,6 +42,26 @@ class hotel_mgmt_control:
             else:
                 print("OK")
 
+    def __repsint__(self, s):
+    try:
+        int(s)
+        return True
+    except ValueError:
+        return False
+
+    def input_dummy_data(self):
+        curs = self.cnx.cursor()
+        lines = []
+        table = ""
+        with open("dummy_data.csv", "w") as f:
+            lines = [l.strip() for l in f.readall()]
+        for l in lines:
+            if l[0] == "/":
+                table = l[2:]
+            else if self.__repsint__(l[0]):
+                curs.execute("insert into {} values ({});".format(table, l))
+
+
     def close(self):
         """
         Clean up
@@ -389,7 +409,50 @@ class hotel_mgmt_customer:
                 check_in_date = raw_input("Please select check in date (%Y-%m-%d): ")
                 check_out_date = raw_input("Please select check out date (%Y-%m-%d): ")
 
-                cur.execute("select * from Room_Type")
+                cur.execute("select distinct(room_type) from Room where occupied_status=0;")
+                typesaval = cur.fetchall()
+                print("Types avaliable:")
+                for i in typesaval:
+                    cur.execute("select * from Room_Type where room_type = {};".format(i))
+                    print(i, ": ", cur.fetchall())
+                r = raw_input("Select index of preferred room type.")
+
+                rid = None
+                for i in typesaval:
+                    if int(r) == i[2]:
+                        rid = i[0]
+                        break
+
+                cur.execute("insert into Reservation values ({}, {}, NOW(), '{}', '{}', 0,0,0);".format(self.login_id, rid, check_in_date, check_out_date))
+                print("Room Reserved")
+                self.cnx.commit()
+                return "Success"
+
+            except mysql.connector.InternalError as e:
+                print "failed to find reservations: ", e
+                try:
+                    self.cnx.rollback()
+                except mysql.connector.InternalError as e:
+                    pass
+                return None
+
+    def cancel(self):
+        if self.logged_in:
+            try:
+                self.controller.cnx.start_transaction()
+                cur = controller.cnx.cursor()
+                cur.execute("select * from Reservation where cid = {};".format(self.login_id))
+                res = cur.fetchall()
+
+                if len(res) > 0:
+                    for i in range(len(res)):
+                        print(i, ": ", res[i])
+                    d = raw_input("Select the index of the reservation you wish to delete: ")
+                    cur.execute("delete * from Reservation where cid = {} and room_id = {} and reservation_date = {};".format(res[int(d)][0], res[int(d)][1], res[int(d)][2]))
+                    return res[d]
+                else:
+                    print("No Reservations Found")
+                    return None
 
                 self.cnx.commit()
                 return res
@@ -401,5 +464,3 @@ class hotel_mgmt_customer:
                 except mysql.connector.InternalError as e:
                     pass
                 return None
-
-    def cancel(self):
