@@ -58,6 +58,7 @@ class hotel_mgmt_control:
             if l[0] == "/":
                 table = l[2:]
             if self.__repsint__(l[0]):
+                print("hit")
                 curs.execute("insert into {} values ({});".format(table, l))
 
 
