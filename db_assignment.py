@@ -434,7 +434,7 @@ class hotel_mgmt_customer:
                 typesaval = cur.fetchall()
                 print("Types avaliable:")
                 for i in typesaval:
-                    cur.execute("select * from Room_Type where room_type = {};".format(i))
+                    cur.execute("select * from Room_Type where room_type={};".format(i[0]))
                     print(i, ": ", cur.fetchall())
                 r = int(raw_input("Select index of preferred room type."))
 
