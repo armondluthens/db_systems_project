@@ -83,7 +83,7 @@ class hotel_mgmt_employee:
         else:
             try:
                 self.controller.cnx.start_transaction()
-                cur = controller.cnx.cursor()
+                cur = self.controller.cnx.cursor()
                 cur.execute("select * from Employee where employee_id = {};".format(self.login_id))
                 res = cur.fetchall()
                 if len(res) != 0:
@@ -114,7 +114,7 @@ class hotel_mgmt_employee:
         if self.logged_in:
             try:
                 self.controller.cnx.start_transaction()
-                cur = controller.cnx.cursor()
+                cur = self.controller.cnx.cursor()
                 cur.execute("select * from Room where occupied_status = 1;")
                 res = cur.fetchall()
                 print("Rooms Occupied: ", res)
@@ -132,7 +132,7 @@ class hotel_mgmt_employee:
         if self.logged_in:
             try:
                 self.controller.cnx.start_transaction()
-                cur = controller.cnx.cursor()
+                cur = self.controller.cnx.cursor()
                 cur.execute("select * from House_Keeping;")
                 res = cur.fetchall()
                 print("Housekeeping Assignments: ", res)
@@ -150,7 +150,7 @@ class hotel_mgmt_employee:
         if self.logged_in:
             try:
                 self.controller.cnx.start_transaction()
-                cur = controller.cnx.cursor()
+                cur = self.controller.cnx.cursor()
                 cur.execute("select * from Reservation where cid = {} and room_id = {};".format(customer_id, room_id))
                 res = cur.fetchall()
                 if len(res) == 0:
@@ -183,7 +183,7 @@ class hotel_mgmt_employee:
         if self.logged_in:
             try:
                 self.controller.cnx.start_transaction()
-                cur = controller.cnx.cursor()
+                cur = self.controller.cnx.cursor()
                 cur.execute("select * from Reservation where cid = {} and room_id = {};".format(customer_id, room_id))
                 res = cur.fetchall()
                 if len(res) == 0:
@@ -216,7 +216,7 @@ class hotel_mgmt_employee:
         if self.logged_in:
             try:
                 self.controller.cnx.start_transaction()
-                cur = controller.cnx.cursor()
+                cur = self.controller.cnx.cursor()
                 cur.execute("select * from House_Keeping where room_id = {} and assigned_to_id = {} and completion_status = 0;".format(room, assigned_id))
                 res = cur.fetchall()
 
