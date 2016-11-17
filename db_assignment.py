@@ -6,7 +6,7 @@ import datetime
 class hotel_mgmt_control:
 
     def __init__(self):
-        self.controller.cnx = mysql.connector.connect(
+        self.cnx = mysql.connector.connect(
             user='bpratherhuff', host='dbdev.divms.uiowa.edu', database='db_bpratherhuff', password='02btYCnf1=EY')
         self.schema = []
 
@@ -26,7 +26,7 @@ class hotel_mgmt_control:
         """
         Create tables based on schema
         """
-        curs = self.controller.cnx.cursor()
+        curs = self.cnx.cursor()
         for t in self.schema:
             try:
                 print("Creating tables")
@@ -48,7 +48,7 @@ class hotel_mgmt_control:
 
 
     def input_dummy_data(self):
-        curs = self.controller.cnx.cursor()
+        curs = self.cnx.cursor()
         lines = []
         table = ""
         with open("dummy_data.csv", "r") as f:
@@ -65,7 +65,7 @@ class hotel_mgmt_control:
         """
         Clean up
         """
-        self.controller.cnx.close()
+        self.cnx.close()
 
 
 class hotel_mgmt_employee:
@@ -83,7 +83,7 @@ class hotel_mgmt_employee:
         else:
             try:
                 self.controller.cnx.start_transaction()
-                cur = self.controller.cnx.cursor()
+                cur = controller.cnx.cursor()
                 cur.execute("select * from Employee where employee_id = {};".format(self.login_id))
                 res = cur.fetchall()
                 if len(res) != 0:
@@ -114,7 +114,7 @@ class hotel_mgmt_employee:
         if self.logged_in:
             try:
                 self.controller.cnx.start_transaction()
-                cur = self.controller.cnx.cursor()
+                cur = controller.cnx.cursor()
                 cur.execute("select * from Room where occupied_status = 1;")
                 res = cur.fetchall()
                 print("Rooms Occupied: ", res)
@@ -132,7 +132,7 @@ class hotel_mgmt_employee:
         if self.logged_in:
             try:
                 self.controller.cnx.start_transaction()
-                cur = self.controller.cnx.cursor()
+                cur = controller.cnx.cursor()
                 cur.execute("select * from House_Keeping;")
                 res = cur.fetchall()
                 print("Housekeeping Assignments: ", res)
@@ -150,7 +150,7 @@ class hotel_mgmt_employee:
         if self.logged_in:
             try:
                 self.controller.cnx.start_transaction()
-                cur = self.controller.cnx.cursor()
+                cur = controller.cnx.cursor()
                 cur.execute("select * from Reservation where cid = {} and room_id = {};".format(customer_id, room_id))
                 res = cur.fetchall()
                 if len(res) == 0:
@@ -183,7 +183,7 @@ class hotel_mgmt_employee:
         if self.logged_in:
             try:
                 self.controller.cnx.start_transaction()
-                cur = self.controller.cnx.cursor()
+                cur = controller.cnx.cursor()
                 cur.execute("select * from Reservation where cid = {} and room_id = {};".format(customer_id, room_id))
                 res = cur.fetchall()
                 if len(res) == 0:
@@ -216,7 +216,7 @@ class hotel_mgmt_employee:
         if self.logged_in:
             try:
                 self.controller.cnx.start_transaction()
-                cur = self.controller.cnx.cursor()
+                cur = controller.cnx.cursor()
                 cur.execute("select * from House_Keeping where room_id = {} and assigned_to_id = {} and completion_status = 0;".format(room, assigned_id))
                 res = cur.fetchall()
 
@@ -451,7 +451,7 @@ class hotel_mgmt_customer:
         if self.logged_in:
             try:
                 self.controller.cnx.start_transaction()
-                cur = self.controller.cnx.cursor()
+                cur = controller.cnx.cursor()
                 cur.execute("select * from Reservation where cid = {};".format(self.login_id))
                 res = cur.fetchall()
 
