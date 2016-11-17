@@ -84,8 +84,9 @@ class hotel_mgmt_employee:
             try:
                 self.controller.cnx.start_transaction()
                 cur = self.controller.cnx.cursor()
-                cur.execute("select * from Employee where employee_id = {};".format(self.login_id))
+                cur.execute("select * from Employee where employee_id={};".format(self.login_id))
                 res = cur.fetchall()
+                print res
                 if len(res) != 0:
                     self.logged_in = True
                 else:
