@@ -291,6 +291,7 @@ class hotel_mgmt_customer:
                     pass
                 return None
 
+
     def rooms_available(self):
 
         if self.logged_in:
@@ -324,6 +325,16 @@ class hotel_mgmt_customer:
 
 
     def cost_at_checkout(self):
+        #def cost_at_checkout(self):
+        # tran_id = "SELECT transaction_id, DATE_DIFF(check_out_date, NOW()), as    num_days_early, room_id FROM Reservation where cid=? and room_id=? and reservation_date=?"
+        # if(num_days_early > 0){
+        #   rType = SELECT room_type FROM Room where room_type= "type returned from previous query"
+        #   dailyCost = SELECT cost FROM Room_Type WHERE room_type = "room_type from previous query"
+        #   refundAmount = dailyCost*numDaysEarly
+        #   update refund days in transaction table
+        # }
+        # SELECT * from Transaction WHERE transaction_id="tran_id"
+
         if self.logged_in:
             try:
                 self.controller.cnx.start_transaction()
@@ -400,6 +411,7 @@ class hotel_mgmt_customer:
                 return None
 
 
+
     def reserve(self):
         if self.logged_in:
             try:
@@ -458,7 +470,7 @@ class hotel_mgmt_customer:
                 return res
 
             except mysql.connector.InternalError as e:
-                print "failed to find reservations: ", e
+                print "failed to cancle reservation: ", e
                 try:
                     self.cnx.rollback()
                 except mysql.connector.InternalError as e:

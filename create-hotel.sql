@@ -1,5 +1,14 @@
+/******************************************************************
+    Armond Luthens & Bryan Prather-Huff
+    CS4400: Database Systems Homework #6
+    Group #2
+    File Name: create-hotel.sql
+    Instructor: Brandon Myers
+    Due Date: Thursday, November 8, 2016 @ 11:59pm
+*******************************************************************/
+
 create table Customer (
-  cid int PRIMARY KEY,
+   cid int PRIMARY KEY,
   first_name varchar(20),
   last_name varchar(20),
   phone varchar(10)
