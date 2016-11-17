@@ -476,3 +476,8 @@ class hotel_mgmt_customer:
                 except mysql.connector.InternalError as e:
                     pass
                 return None
+
+if __name__ == '__main__':
+    ctrl = hotel_mgmt_control()
+    mgr = hotel_mgmt_employee(ctrl)
+    cust = hotel_mgmt_customer(ctrl,1)
