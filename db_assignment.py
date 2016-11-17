@@ -59,7 +59,7 @@ class hotel_mgmt_control:
         for l in lines:
             if l[0] == "/":
                 table = l[2:]
-            else if self.__repsint__(l[0]):
+            if self.__repsint__(l[0]):
                 curs.execute("insert into {} values ({});".format(table, l))
 
 
