@@ -86,7 +86,6 @@ class hotel_mgmt_employee:
                 cur = self.controller.cnx.cursor()
                 cur.execute("select * from Employee where employee_id={};".format(self.login_id))
                 res = cur.fetchall()
-                print res
                 if len(res) != 0:
                     self.logged_in = True
                 else:
@@ -481,7 +480,7 @@ if __name__ == '__main__':
     ctrl = hotel_mgmt_control()
     ctrl.read_schema()
     ctrl.create_tables()
-    #ctrl.input_dummy_data()
+    ctrl.input_dummy_data()
     mgr = hotel_mgmt_employee(ctrl,1)
     mgr.rooms_occupied()
     mgr.housekeeping()
