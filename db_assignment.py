@@ -6,7 +6,7 @@ import datetime
 class hotel_mgmt_control:
 
     def __init__(self):
-        self.cnx = mysql.connector.connect(
+        self.controller.cnx = mysql.connector.connect(
             user='bpratherhuff', host='dbdev.divms.uiowa.edu', database='db_bpratherhuff', password='02btYCnf1=EY')
         self.schema = []
 
@@ -26,7 +26,7 @@ class hotel_mgmt_control:
         """
         Create tables based on schema
         """
-        curs = self.cnx.cursor()
+        curs = self.controller.cnx.cursor()
         for t in self.schema:
             try:
                 print("Creating tables")
@@ -48,7 +48,7 @@ class hotel_mgmt_control:
 
 
     def input_dummy_data(self):
-        curs = self.cnx.cursor()
+        curs = self.controller.cnx.cursor()
         lines = []
         table = ""
         with open("dummy_data.csv", "r") as f:
@@ -65,7 +65,7 @@ class hotel_mgmt_control:
         """
         Clean up
         """
-        self.cnx.close()
+        self.controller.cnx.close()
 
 
 class hotel_mgmt_employee:
@@ -99,13 +99,13 @@ class hotel_mgmt_employee:
                     res = cur.fetchall()
                     if len(res) != 0:
                         self.logged_in = True
-                self.cnx.commit()
+                self.controller.cnx.commit()
                 return res
 
             except mysql.connector.InternalError as e:
                 print "failed to login: ", e
                 try:
-                    self.cnx.rollback()
+                    self.controller.cnx.rollback()
                 except mysql.connector.InternalError as e:
                     pass
                 return None
@@ -118,12 +118,12 @@ class hotel_mgmt_employee:
                 cur.execute("select * from Room where occupied_status = 1;")
                 res = cur.fetchall()
                 print("Rooms Occupied: ", res)
-                self.cnx.commit()
+                self.controller.cnx.commit()
 
             except mysql.connector.InternalError as e:
                 print "failed to fetch rooms occupied: ", e
                 try:
-                    self.cnx.rollback()
+                    self.controller.cnx.rollback()
                 except mysql.connector.InternalError as e:
                     pass
                 return None
@@ -136,12 +136,12 @@ class hotel_mgmt_employee:
                 cur.execute("select * from House_Keeping;")
                 res = cur.fetchall()
                 print("Housekeeping Assignments: ", res)
-                self.cnx.commit()
+                self.controller.cnx.commit()
 
             except mysql.connector.InternalError as e:
                 print "failed to fetch hosekeeping assignments: ", e
                 try:
-                    self.cnx.rollback()
+                    self.controller.cnx.rollback()
                 except mysql.connector.InternalError as e:
                     pass
                 return None
@@ -168,13 +168,13 @@ class hotel_mgmt_employee:
                 cur.execute("update Reservation set check_in_status = 1, check_in_date = NOW() where cid = {} and room_id = {} and reservation_date = '{}';".format(res[0], res[1], res[2]))
 
                 print("Reservation Checked In: ", res)
-                self.cnx.commit()
+                self.controller.cnx.commit()
                 return res
 
             except mysql.connector.InternalError as e:
                 print "failed to check in: ", e
                 try:
-                    self.cnx.rollback()
+                    self.controller.cnx.rollback()
                 except mysql.connector.InternalError as e:
                     pass
                 return None
@@ -201,13 +201,13 @@ class hotel_mgmt_employee:
                 cur.execute("update Reservation set check_out_status = 1, check_out_date = NOW() where cid = {} and room_id = {} and reservation_date = '{}';".format(res[0], res[1], res[2]))
 
                 print("Reservation Checked Out: ", res)
-                self.cnx.commit()
+                self.controller.cnx.commit()
                 return res
 
             except mysql.connector.InternalError as e:
                 print "failed to check out: ", e
                 try:
-                    self.cnx.rollback()
+                    self.controller.cnx.rollback()
                 except mysql.connector.InternalError as e:
                     pass
                 return None
@@ -235,13 +235,13 @@ class hotel_mgmt_employee:
                 cur.execute("update House_Keeping set completion_status = 1, description = '{}' where room_id = {} and date_of_service = {};".format(discript, res[0], res[1]))
 
                 print("Set Serviced: ", res)
-                self.cnx.commit()
+                self.controller.cnx.commit()
                 return res
 
             except mysql.connector.InternalError as e:
                 print "failed to check out: ", e
                 try:
-                    self.cnx.rollback()
+                    self.controller.cnx.rollback()
                 except mysql.connector.InternalError as e:
                     pass
                 return None
@@ -279,13 +279,13 @@ class hotel_mgmt_customer:
                     res = cur.fetchall()
                     if len(res) != 0:
                         self.logged_in = True
-                self.cnx.commit()
+                self.controller.cnx.commit()
                 return res
 
             except mysql.connector.InternalError as e:
                 print "failed to login: ", e
                 try:
-                    self.cnx.rollback()
+                    self.controller.cnx.rollback()
                 except mysql.connector.InternalError as e:
                     pass
                 return None
@@ -311,13 +311,13 @@ class hotel_mgmt_customer:
                     print("No Rooms Found")
                     return None
 
-                self.cnx.commit()
+                self.controller.cnx.commit()
                 return rooms
 
             except mysql.connector.InternalError as e:
                 print "failed to get avaliable rooms: ", e
                 try:
-                    self.cnx.rollback()
+                    self.controller.cnx.rollback()
                 except mysql.connector.InternalError as e:
                     pass
                 return None
@@ -373,13 +373,13 @@ class hotel_mgmt_customer:
                     price = cost[0][0] * delta.days
                     print("Reservation will cost: {} at ${} per day for {} days.".format(price, cost[0][0], delta.days))
 
-                self.cnx.commit()
+                self.controller.cnx.commit()
                 return price
 
             except mysql.connector.InternalError as e:
                 print "failed to calculate cost: ", e
                 try:
-                    self.cnx.rollback()
+                    self.controller.cnx.rollback()
                 except mysql.connector.InternalError as e:
                     pass
                 return None
@@ -398,13 +398,13 @@ class hotel_mgmt_customer:
                     print("No Reservations Found")
                     return None
 
-                self.cnx.commit()
+                self.controller.cnx.commit()
                 return res
 
             except mysql.connector.InternalError as e:
                 print "failed to find reservations: ", e
                 try:
-                    self.cnx.rollback()
+                    self.controller.cnx.rollback()
                 except mysql.connector.InternalError as e:
                     pass
                 return None
@@ -436,13 +436,13 @@ class hotel_mgmt_customer:
 
                 cur.execute("insert into Reservation values ({}, {}, NOW(), '{}', '{}', 0,0,0);".format(self.login_id, rid, check_in_date, check_out_date))
                 print("Room Reserved")
-                self.cnx.commit()
+                self.controller.cnx.commit()
                 return "Success"
 
             except mysql.connector.InternalError as e:
                 print "failed to find reservations: ", e
                 try:
-                    self.cnx.rollback()
+                    self.controller.cnx.rollback()
                 except mysql.connector.InternalError as e:
                     pass
                 return None
@@ -465,13 +465,13 @@ class hotel_mgmt_customer:
                     print("No Reservations Found")
                     return None
 
-                self.cnx.commit()
+                self.controller.cnx.commit()
                 return res
 
             except mysql.connector.InternalError as e:
                 print "failed to cancle reservation: ", e
                 try:
-                    self.cnx.rollback()
+                    self.controller.cnx.rollback()
                 except mysql.connector.InternalError as e:
                     pass
                 return None
