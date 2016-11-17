@@ -82,7 +82,7 @@ class hotel_mgmt_employee:
         self.login()
 
     def login(self):
-        if login_id == None:
+        if self.login_id == None:
             self.logged_in = True
         else:
             try:
