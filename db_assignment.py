@@ -12,6 +12,7 @@ class hotel_mgmt_control:
 
         self.read_schema()
         self.create_tables()
+        self.input_dummy_data()
 
     def read_schema(self):
         """
@@ -191,7 +192,7 @@ class hotel_mgmt_employee:
                 if len(res) == 0:
                     print("Reservation Not Found")
                     return None
-                else if len(res) > 1:
+                elif len(res) > 1:
                     print("Multiple Reservations Found, Choose Index of Reservation.")
                     for i in range(len(res)):
                         print(i,": ", res[i])
@@ -345,7 +346,7 @@ class hotel_mgmt_customer:
                 if len(res) == 0:
                     print("Reservation Not Found")
                     return None
-                else if len(res) > 1:
+                elif len(res) > 1:
                     print("Multiple Reservations Found, Choose Index of Reservation")
                     for i in range(len(res)):
                         print(i,": ", res[i])
