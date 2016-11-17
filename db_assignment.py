@@ -427,8 +427,8 @@ class hotel_mgmt_customer:
                 self.controller.cnx.start_transaction()
                 cur = self.controller.cnx.cursor()
 
-                check_in_date = raw_input("Please select check in date (%Y-%m-%d): ")
-                check_out_date = raw_input("Please select check out date (%Y-%m-%d): ")
+                check_in_date = raw_input("Please select check in date (YYYY-MM-DD): ")
+                check_out_date = raw_input("Please select check out date (YYYY-MM-DD): ")
 
                 cur.execute("select distinct(room_type) from Room where occupied_status=0;")
                 typesaval = cur.fetchall()
@@ -444,7 +444,7 @@ class hotel_mgmt_customer:
                         rid = i[0]
                         break
 
-                cur.execute("insert into Reservation values ({}, {}, NOW(), CONVERT(TIMESTAMP, '{}'), CONVERT(TIMESTAMP, '{}'), 0,0,0);".format(self.login_id, rid, check_in_date, check_out_date))
+                cur.execute("insert into Reservation values ({}, {}, NOW(), '{}', '{}', 0,0,0);".format(self.login_id, rid, check_in_date, check_out_date))
                 print("Room Reserved")
                 self.controller.cnx.commit()
                 return "Success"
