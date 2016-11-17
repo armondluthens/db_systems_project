@@ -242,6 +242,7 @@ class hotel_mgmt_employee:
                 else:
                     res = res[0]
 
+                print("Hit")
                 cur.execute("update House_Keeping set completion_status = 1, description = '{}' where room_id = {} and date_of_service = {};".format(discript, res[0], res[1]))
 
                 print("Set Serviced: ", res)
@@ -498,7 +499,6 @@ if __name__ == '__main__':
     print("mgr.housekeeping:", mgr.housekeeping())
     print("mgr.check_in:", mgr.check_in(1,1))
     print("mgr.check_out:", mgr.check_out(1,1))
-    print("mgr.mark_serviced:", mgr.mark_serviced(3,1,"Cleaned the room"))
-    print("mgr.rooms_occupied:", mgr.housekeeping())
+    print("mgr.mark_serviced:", mgr.mark_serviced(5,5,"Cleaned the room"))
     print("Customer Initialized")
     cust = hotel_mgmt_customer(ctrl,1)
