@@ -49,6 +49,7 @@ class hotel_mgmt_control:
     except ValueError:
         return False
 
+
     def input_dummy_data(self):
         curs = self.cnx.cursor()
         lines = []
