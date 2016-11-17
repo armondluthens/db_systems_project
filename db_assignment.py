@@ -363,6 +363,7 @@ class hotel_mgmt_customer:
                     res = res[0]
 
                 f = '%Y-%m-%d %H:%M:%S'
+                print(res[3], res[4])
                 checkintime = datetime.datetime.strptime(res[3], f)
                 checkouttime = datetime.datetime.strptime(res[4], f)
 
