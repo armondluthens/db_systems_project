@@ -198,7 +198,7 @@ class hotel_mgmt_employee:
                     print("Multiple Reservations Found, Choose Index of Reservation.")
                     for i in range(len(res)):
                         print(i,": ", res[i])
-                    indx = raw_input("Index: ")
+                    indx = int(raw_input("Index: "))
                     res = res[indx]
                 else:
                     res = res[0]
@@ -232,7 +232,7 @@ class hotel_mgmt_employee:
                     print("Multiple Assignments found, select index.")
                     for i in range(len(res)):
                         print(i,": ", res[i])
-                    indx = raw_input("Index: ")
+                    indx = int(raw_input("Index: "))
                     res = res[indx]
                 else:
                     res = res[0]
@@ -352,7 +352,7 @@ class hotel_mgmt_customer:
                     print("Multiple Reservations Found, Choose Index of Reservation")
                     for i in range(len(res)):
                         print(i,": ", res[i])
-                    indx = raw_input("Index: ")
+                    indx = int(raw_input("Index: "))
                     res = res[indx]
                 else:
                     res = res[0]
@@ -431,7 +431,7 @@ class hotel_mgmt_customer:
                 for i in typesaval:
                     cur.execute("select * from Room_Type where room_type = {};".format(i))
                     print(i, ": ", cur.fetchall())
-                r = raw_input("Select index of preferred room type.")
+                r = int(raw_input("Select index of preferred room type."))
 
                 rid = None
                 for i in typesaval:
