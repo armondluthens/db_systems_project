@@ -63,6 +63,7 @@ class hotel_mgmt_control:
                         curs.execute("insert into {} values ({});".format(table, l))
                     except mysql.connector.InternalError as e:
                         print "entry exists"
+        print("Hit")
         self.cnx.commit()
 
 
