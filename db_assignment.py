@@ -436,12 +436,12 @@ class hotel_mgmt_customer:
                 for i in typesaval:
                     cur.execute("select * from Room_Type where room_type={};".format(i[0]))
                     print(i, ": ", cur.fetchall())
-                r = int(raw_input("Select index of preferred room type."))
+                r = int(raw_input("Select index of preferred room type: "))
 
                 rid = None
                 for i in typesaval:
-                    if int(r) == i[2]:
-                        rid = i[0]
+                    if int(r) == i[0][2]:
+                        rid = i[0][0]
                         break
 
                 cur.execute("insert into Reservation values ({}, {}, NOW(), '{}', '{}', 0,0,0);".format(self.login_id, rid, check_in_date, check_out_date))
