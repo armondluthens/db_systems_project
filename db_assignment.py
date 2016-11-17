@@ -56,7 +56,8 @@ class hotel_mgmt_control:
         lines = []
         table = ""
         with open("dummy_data.csv", "w") as f:
-            lines = [l.strip() for l in f.readlines()]
+            lines = f.readlines()
+        lines = [l.strip() for l in lines]
         for l in lines:
             if l[0] == "/":
                 table = l[2:]
