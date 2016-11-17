@@ -444,7 +444,7 @@ class hotel_mgmt_customer:
                         rid = i[0]
                         break
 
-                cur.execute("insert into Reservation values ({}, {}, NOW(), CONVERT(DATETIME, '{}'), CONVERT(DATETIME, '{}'), 0,0,0);".format(self.login_id, rid, check_in_date, check_out_date))
+                cur.execute("insert into Reservation values ({}, {}, NOW(), CONVERT(TIMESTAMP, '{}'), CONVERT(TIMESTAMP, '{}'), 0,0,0);".format(self.login_id, rid, check_in_date, check_out_date))
                 print("Room Reserved")
                 self.controller.cnx.commit()
                 return "Success"
