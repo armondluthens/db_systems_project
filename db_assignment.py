@@ -462,7 +462,7 @@ class hotel_mgmt_customer:
         if self.logged_in:
             try:
                 self.controller.cnx.start_transaction()
-                cur = controller.cnx.cursor()
+                cur = self.controller.cnx.cursor()
                 cur.execute("select * from Reservation where cid = {};".format(self.login_id))
                 res = cur.fetchall()
 
