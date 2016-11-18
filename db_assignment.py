@@ -497,11 +497,11 @@ if __name__ == '__main__':
     mgr = hotel_mgmt_employee(ctrl,1)
     print("Employee Initialized")
 
-    # print("mgr.rooms_occupied:", mgr.rooms_occupied())
-    # print("mgr.housekeeping:", mgr.housekeeping())
-    # print("mgr.check_in:", mgr.check_in(1,1))
-    # print("mgr.check_out:", mgr.check_out(1,1))
-    # print("mgr.mark_serviced:", mgr.mark_serviced(5,5,"Cleaned the room"))
+    print("mgr.rooms_occupied:", mgr.rooms_occupied())
+    print("mgr.housekeeping:", mgr.housekeeping())
+    print("mgr.check_in:", mgr.check_in(1,1))
+    print("mgr.check_out:", mgr.check_out(1,1))
+    print("mgr.mark_serviced:", mgr.mark_serviced(5,5,"Cleaned the room"))
 
     print("Customer Initialized")
     cust = hotel_mgmt_customer(ctrl,1)
