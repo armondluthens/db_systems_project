@@ -4,7 +4,9 @@ import datetime
 
 
 class hotel_mgmt_control:
-
+    '''
+    Creating database connection.
+    '''
     def __init__(self):
         self.cnx = mysql.connector.connect(
             user='bpratherhuff', host='dbdev.divms.uiowa.edu', database='db_bpratherhuff', password='02btYCnf1=EY')
@@ -46,7 +48,10 @@ class hotel_mgmt_control:
         except ValueError:
             return False
 
-
+    '''
+    reading in and populating tables with
+    dummy data csv file
+    '''
     def input_dummy_data(self):
         curs = self.cnx.cursor()
         lines = []
@@ -72,7 +77,11 @@ class hotel_mgmt_control:
         """
         self.cnx.close()
 
-
+'''
+This class incorporates all functionality for the database
+from the hotel management side. The hotel management can
+update reservations, and control room servicing assignments.
+'''
 class hotel_mgmt_employee:
 
     def __init__(self, controller, login_id=None):
@@ -82,6 +91,10 @@ class hotel_mgmt_employee:
 
         self.login()
 
+    '''
+    Hotel customer side function to log a hotel employee 
+    into their account
+    '''
     def login(self):
         if self.login_id == None:
             self.logged_in = True
@@ -115,6 +128,13 @@ class hotel_mgmt_employee:
                     pass
                 return None
 
+    '''
+    Hotel management side function to query
+    for all rooms that are currently occupied.
+    Must be logged in to execute the query. If
+    query fails, a failure message occurs and
+    a rollback occurs.
+    '''
     def rooms_occupied(self):
         if self.logged_in:
             try:
@@ -134,6 +154,13 @@ class hotel_mgmt_employee:
                     pass
                 return None
 
+    '''
+    Hotel management side function to query
+    for for all housekeeping assignments.
+    Must be logged in to execute the query. If
+    query fails, a failure message occurs and
+    a rollback occurs.
+    '''
     def housekeeping(self):
         if self.logged_in:
             try:
@@ -153,6 +180,16 @@ class hotel_mgmt_employee:
                     pass
                 return None
 
+    '''
+    Hotel management side function to query
+    to check a guest in to their room.  The query will
+    return all reservations found for a customer id  and
+    room id. After the checkin is completed, the reservation
+    checked in status will be updated from false to true.
+    Must be logged in to execute the query. If
+    query fails, a failure message occurs and
+    a rollback occurs.
+    '''
     def check_in(self, customer_id, room_id):
         if self.logged_in:
             try:
@@ -187,6 +224,16 @@ class hotel_mgmt_employee:
                     pass
                 return None
 
+    '''
+    Hotel management side function to query
+    to check a guest out of their room.  The query will
+    return all reservations found for a customer id  and
+    room id. After the checkin is completed, the reservation
+    checked out status will be updated from false to true.
+    Must be logged in to execute the query. If
+    query fails, a failure message occurs and
+    a rollback occurs.
+    '''
     def check_out(self, customer_id, room_id):
         if self.logged_in:
             try:
@@ -221,6 +268,15 @@ class hotel_mgmt_employee:
                     pass
                 return None
 
+    '''
+    Hotel management side function to query
+    for a room service assignment. Once the room has
+    been serviced, the completion status of the room
+    service assignment is updated from false to true.
+    Must be logged in to execute the query. If
+    query fails, a failure message occurs and
+    a rollback occurs.
+    '''
     def mark_serviced(self, room, assigned_id, discript):
         if self.logged_in:
             try:
@@ -257,9 +313,20 @@ class hotel_mgmt_employee:
                 return None
 
 
-
+'''
+    This class incorporates all functionality for the database
+    from the hotel customer side. Hotel customers can view
+    reservations, check room availability for booking, and
+    view costs.
+'''
 class hotel_mgmt_customer:
 
+    '''
+    Hotel customer side function to create a customer object.
+    This will give the customer its necessary attributes
+    for querying within the  application. If query fails, a
+    failure message occurs and a rollback occurs.
+    '''
     def __init__(self, controller, login_id=None):
         self.login_id = login_id
         self.logged_in = False
@@ -267,6 +334,10 @@ class hotel_mgmt_customer:
 
         self.login()
 
+    '''
+    Hotel customer side function to log a customer into
+    their account
+    '''
     def login(self):
         if self.login_id == None:
             raise ValueError("Customer ID can't be empty!")
@@ -300,7 +371,13 @@ class hotel_mgmt_customer:
                     pass
                 return None
 
-
+    '''
+    Hotel customer side function to query
+    for all rooms that are currently available.
+    Must be logged in to execute the query. If
+    query fails, a failure message occurs and
+    a rollback occurs.
+    '''
     def rooms_available(self):
 
         if self.logged_in:
@@ -332,17 +409,15 @@ class hotel_mgmt_customer:
                     pass
                 return None
 
-
+    '''
+    Hotel customer side function to query
+    for  their cost at checkout.  If the checkout date is
+    earlier than the expected checkout date, a refund is
+    calcuated and deducted from the original cost.
+    Must be logged in to execute the query. If query fails,
+    a failure message occurs and a rollback occurs.
+    '''
     def cost_at_checkout(self):
-        #def cost_at_checkout(self):
-        # tran_id = "SELECT transaction_id, DATE_DIFF(check_out_date, NOW()), as    num_days_early, room_id FROM Reservation where cid=? and room_id=? and reservation_date=?"
-        # if(num_days_early > 0){
-        #   rType = SELECT room_type FROM Room where room_type= "type returned from previous query"
-        #   dailyCost = SELECT cost FROM Room_Type WHERE room_type = "room_type from previous query"
-        #   refundAmount = dailyCost*numDaysEarly
-        #   update refund days in transaction table
-        # }
-        # SELECT * from Transaction WHERE transaction_id="tran_id"
 
         if self.logged_in:
             try:
@@ -394,6 +469,12 @@ class hotel_mgmt_customer:
                     pass
                 return None
 
+    '''
+    Hotel customer side function to query
+    for  the details of their reservation.
+    Must be logged in to execute the query. If query fails,
+    a failure message occurs and a rollback occurs.
+    '''
     def my_reservations(self):
         if self.logged_in:
             try:
@@ -420,7 +501,11 @@ class hotel_mgmt_customer:
                 return None
 
 
-
+    '''
+    Hotel customer side function to create a reservation.
+    Must be logged in to execute the query. If query fails,
+    a failure message occurs and a rollback occurs.
+    '''
     def reserve(self):
         if self.logged_in:
             try:
@@ -458,6 +543,11 @@ class hotel_mgmt_customer:
                     pass
                 return None
 
+    '''
+    Hotel customer side function to cancel a reservation.
+    Must be logged in to execute the query. If query fails,
+    a failure message occurs and a rollback occurs.
+    '''
     def cancel(self):
         if self.logged_in:
             try:
@@ -487,6 +577,12 @@ class hotel_mgmt_customer:
                     pass
                 return None
 
+'''
+    Program driver that creates objects for both classes
+    and calls hotel management functions, as well as the
+    functions for creating the tables and reading data
+    into them.
+'''
 if __name__ == '__main__':
     ctrl = hotel_mgmt_control()
     ctrl.read_schema()
