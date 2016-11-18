@@ -470,7 +470,7 @@ class hotel_mgmt_customer:
                     for i in range(len(res)):
                         print(i, ": ", res[i])
                     d = raw_input("Select the index of the reservation you wish to delete: ")
-                    cur.execute("delete * from Reservation where cid = {} and room_id = {} and reservation_date = {};".format(res[int(d)][0], res[int(d)][1], res[int(d)][2]))
+                    cur.execute("delete * from Reservation where cid={} and room_id={} and reservation_date='{}';".format(res[int(d)][0], res[int(d)][1], res[int(d)][2]))
                     return res[d]
                 else:
                     print("No Reservations Found")
