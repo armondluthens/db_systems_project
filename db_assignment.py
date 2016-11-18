@@ -440,8 +440,9 @@ class hotel_mgmt_customer:
 
                 rid = None
                 for i in typesaval:
-                    if int(r) == i[0][2]:
-                        rid = i[0][0]
+                    print(i)
+                    if int(r) == i[0]:
+                        rid = i[0]
                         break
 
                 cur.execute("insert into Reservation values ({}, {}, NOW(), '{}', '{}', 0,0,0);".format(self.login_id, rid, check_in_date, check_out_date))
