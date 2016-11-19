@@ -341,10 +341,10 @@ class hotel_mgmt_employee:
 
 
 '''
-    This class incorporates all functionality for the database
-    from the hotel customer side. Hotel customers can view
-    reservations, check room availability for booking, and
-    view costs.
+This class incorporates all functionality for the database
+from the hotel customer side. Hotel customers can view
+reservations, check room availability for booking, and
+view costs.
 '''
 class hotel_mgmt_customer:
 
@@ -614,10 +614,10 @@ class hotel_mgmt_customer:
                 return None
 
 '''
-    Program driver that creates objects for both classes
-    and calls hotel management functions, as well as the
-    functions for creating the tables and reading data
-    into them.
+Program driver that creates objects for both classes
+and calls hotel management functions, as well as the
+functions for creating the tables and reading data
+into them.
 '''
 if __name__ == '__main__':
     ctrl = hotel_mgmt_control()
@@ -655,5 +655,5 @@ if __name__ == '__main__':
     #print("cust.rooms_available:", cust.rooms_available())
     #print("cust.cost_at_checkout:", cust.cost_at_checkout())
     #print("cust.my_reservations:", cust.my_reservations())
-    print("cust.reserve:", cust.reserve())
+    #print("cust.reserve:", cust.reserve())
     #print("cust.cancel:", cust.cancel())
