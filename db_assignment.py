@@ -142,7 +142,13 @@ class hotel_mgmt_employee:
                 cur = self.controller.cnx.cursor()
                 cur.execute("select * from Room where occupied_status = 1;")
                 res = cur.fetchall()
-                print("Rooms Occupied: ", res)
+                #print("Rooms Occupied: ", res)
+                #print("Rooms Occupied: ", res)
+
+                for tuple in res:
+                    print ("room occupied: ", tuple[0])
+                print("\n")
+                
                 self.controller.cnx.commit()
                 return res
 
@@ -168,7 +174,12 @@ class hotel_mgmt_employee:
                 cur = self.controller.cnx.cursor()
                 cur.execute("select * from House_Keeping;")
                 res = cur.fetchall()
-                print("Housekeeping Assignments: ", res)
+                #print("Housekeeping Assignments: ", res)
+                print("\nHousekeeping Assignments:")
+                for tuple in res:
+                    print("assignment: ", tuple)
+                print("\n")
+                
                 self.controller.cnx.commit()
                 return res
 
@@ -212,7 +223,12 @@ class hotel_mgmt_employee:
 
                 cur.execute("update Reservation set checked_in_status=1, check_in_date = NOW() where cid = {} and room_id = {} and reservation_date = '{}';".format(res[0], res[1], res[2]))
 
-                print("Reservation Checked In: ", res)
+                #print("Reservation Checked In: ", res)
+                print("\nReservation Checked In:")
+                for tuple in res:
+                    print("Reservation: ", tuple)
+                print("\n")
+                        
                 self.controller.cnx.commit()
                 return res
 
@@ -249,14 +265,21 @@ class hotel_mgmt_employee:
                     print("Multiple Reservations Found, Choose Index of Reservation.")
                     for i in range(len(res)):
                         print(i,": ", res[i])
-                    indx = int(raw_input("Index: "))
+                    indx = int(raw_input("\nIndex: "))
+                    
                     res = res[indx]
+            
                 else:
                     res = res[0]
 
                 cur.execute("update Reservation set checked_out_status=1, check_out_date = NOW() where cid = {} and room_id = {} and reservation_date = '{}';".format(res[0], res[1], res[2]))
 
-                print("Reservation Checked Out: ", res)
+                #print("Reservation Checked Out: ", res)
+                print("\nReservation Checked Out: ")
+                for tuple in res:
+                    print("Reservation: ", tuple)
+                print("\n")
+                
                 self.controller.cnx.commit()
                 return res
 
@@ -301,6 +324,10 @@ class hotel_mgmt_employee:
                 cur.execute("update House_Keeping set completion_status=1, description='{}' where room_id={} and date_of_service='{}';".format(discript, res[0], res[1]))
 
                 print("Set Serviced: ", room, assigned_id)
+                print("\n")
+                for tuple in res:
+                    print("Reservation: ", tuple)
+                
                 self.controller.cnx.commit()
                 return res
 
@@ -392,7 +419,10 @@ class hotel_mgmt_customer:
                     for r in res:
                         cur.execute("select * from Room_Type where room_type = {};".format(r[2]))
                         roomtype = cur.fetchall()
-                        print(roomtype)
+                        #print(roomtype)
+                        print("Room:")
+                        for tuple in roomtype:
+                            print tuple
                         rooms.append(roomtype)
                 else:
                     print("No Rooms Found")
@@ -429,7 +459,7 @@ class hotel_mgmt_customer:
                     print("Reservation Not Found")
                     return None
                 elif len(res) > 1:
-                    print("Multiple Reservations Found, Choose Index of Reservation")
+                    print("\nMultiple Reservations Found, Choose Index of Reservation")
                     for i in range(len(res)):
                         print(i,": ", res[i])
                     indx = int(raw_input("Index: "))
@@ -457,7 +487,8 @@ class hotel_mgmt_customer:
                 else:
                     price = cost[0][0] * delta.days
                     print("Reservation will cost: {} at ${} per day for {} days.".format(price, cost[0][0], delta.days))
-
+                    print("\n")
+                
                 self.controller.cnx.commit()
                 return price
 
@@ -484,7 +515,9 @@ class hotel_mgmt_customer:
                 res = cur.fetchall()
 
                 if len(res) > 0:
-                    print(res)
+                    #print(res)
+                    for tuple in res:
+                        print tuple
                 else:
                     print("No Reservations Found")
                     return None
@@ -533,6 +566,7 @@ class hotel_mgmt_customer:
                 cur.execute("insert into Reservation values ({}, {}, NOW(), '{}', '{}', 0,0,0);".format(self.login_id, rid, check_in_date, check_out_date))
                 print("Room Reserved")
                 self.controller.cnx.commit()
+                print("\nYou have successfully made a reservation.\n")
                 return "Success"
 
             except mysql.connector.InternalError as e:
@@ -561,6 +595,8 @@ class hotel_mgmt_customer:
                         print(i, ": ", res[i])
                     d = raw_input("Select the index of the reservation you wish to delete: ")
                     cur.execute("delete from Reservation where cid = {} and room_id = {} and reservation_date = '{}';".format(res[int(d)][0], res[int(d)][1], res[int(d)][2]))
+
+                    print("\nSuccessful Cancelation.")
                     return res[int(d)]
                 else:
                     print("No Reservations Found")
@@ -588,22 +624,36 @@ if __name__ == '__main__':
     ctrl.read_schema()
     ctrl.create_tables()
     ctrl.input_dummy_data()
-    print("Controller Initialized")
 
+    print("\n")
+    print("Controller Initialized")
+    
     mgr = hotel_mgmt_employee(ctrl,1)
     print("Employee Initialized")
-
-    print("mgr.rooms_occupied:", mgr.rooms_occupied())
-    print("mgr.housekeeping:", mgr.housekeeping())
-    print("mgr.check_in:", mgr.check_in(1,1))
-    print("mgr.check_out:", mgr.check_out(1,1))
-    print("mgr.mark_serviced:", mgr.mark_serviced(5,5,"Cleaned the room"))
-
+    print("\n")
+    
+    mgr.rooms_occupied()
+    mgr.housekeeping()
+    mgr.check_in(1,1)
+    mgr.check_out(1,1)
+    mgr.mark_serviced(5,5,"Cleaned the room")
+    #print("mgr.rooms_occupied:", mgr.rooms_occupied())
+    #print("mgr.housekeeping:", mgr.housekeeping())
+    #print("mgr.check_in:", mgr.check_in(1,1))
+    #print("mgr.check_out:", mgr.check_out(1,1))
+    #print("mgr.mark_serviced:", mgr.mark_serviced(5,5,"Cleaned the room"))
+    
+    print("\n")
     print("Customer Initialized")
     cust = hotel_mgmt_customer(ctrl,1)
-
-    print("cust.rooms_available:", cust.rooms_available())
-    print("cust.cost_at_checkout:", cust.cost_at_checkout())
-    print("cust.my_reservations:", cust.my_reservations())
+    
+    cust.rooms_available()
+    cust.cost_at_checkout()
+    cust.my_reservations()
+    cust.reserve()
+    cust.cancel()
+    #print("cust.rooms_available:", cust.rooms_available())
+    #print("cust.cost_at_checkout:", cust.cost_at_checkout())
+    #print("cust.my_reservations:", cust.my_reservations())
     print("cust.reserve:", cust.reserve())
-    print("cust.cancel:", cust.cancel())
+    #print("cust.cancel:", cust.cancel())
