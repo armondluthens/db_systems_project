@@ -92,7 +92,7 @@ class hotel_mgmt_employee:
         self.login()
 
     '''
-    Hotel customer side function to log a hotel employee 
+    Hotel customer side function to log a hotel employee
     into their account
     '''
     def login(self):
@@ -148,7 +148,7 @@ class hotel_mgmt_employee:
                 for tuple in res:
                     print ("room occupied: ", tuple[0])
                 print("\n")
-                
+
                 self.controller.cnx.commit()
                 return res
 
@@ -179,7 +179,7 @@ class hotel_mgmt_employee:
                 for tuple in res:
                     print("assignment: ", tuple)
                 print("\n")
-                
+
                 self.controller.cnx.commit()
                 return res
 
@@ -228,7 +228,7 @@ class hotel_mgmt_employee:
                 for tuple in res:
                     print("Reservation: ", tuple)
                 print("\n")
-                        
+
                 self.controller.cnx.commit()
                 return res
 
@@ -266,9 +266,9 @@ class hotel_mgmt_employee:
                     for i in range(len(res)):
                         print(i,": ", res[i])
                     indx = int(raw_input("\nIndex: "))
-                    
+
                     res = res[indx]
-            
+
                 else:
                     res = res[0]
 
@@ -279,7 +279,7 @@ class hotel_mgmt_employee:
                 for tuple in res:
                     print("Reservation: ", tuple)
                 print("\n")
-                
+
                 self.controller.cnx.commit()
                 return res
 
@@ -327,7 +327,7 @@ class hotel_mgmt_employee:
                 print("\n")
                 for tuple in res:
                     print("Reservation: ", tuple)
-                
+
                 self.controller.cnx.commit()
                 return res
 
@@ -488,7 +488,7 @@ class hotel_mgmt_customer:
                     price = cost[0][0] * delta.days
                     print("Reservation will cost: {} at ${} per day for {} days.".format(price, cost[0][0], delta.days))
                     print("\n")
-                
+
                 self.controller.cnx.commit()
                 return price
 
@@ -627,11 +627,11 @@ if __name__ == '__main__':
 
     print("\n")
     print("Controller Initialized")
-    
+
     mgr = hotel_mgmt_employee(ctrl,1)
     print("Employee Initialized")
     print("\n")
-    
+
     mgr.rooms_occupied()
     mgr.housekeeping()
     mgr.check_in(1,1)
@@ -642,11 +642,11 @@ if __name__ == '__main__':
     #print("mgr.check_in:", mgr.check_in(1,1))
     #print("mgr.check_out:", mgr.check_out(1,1))
     #print("mgr.mark_serviced:", mgr.mark_serviced(5,5,"Cleaned the room"))
-    
+
     print("\n")
     print("Customer Initialized")
     cust = hotel_mgmt_customer(ctrl,1)
-    
+
     cust.rooms_available()
     cust.cost_at_checkout()
     cust.my_reservations()
