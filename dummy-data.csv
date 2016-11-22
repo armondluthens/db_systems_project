@@ -6,14 +6,12 @@
 4,'Joe','Dirt',3334448888
 5,'Lucy','Lou',3332228888
 
-
 //Employee
 1,'Armond','Luthens','manager'
 2,'Bryan','Prather-Huff','manager'
 3,'Rik','Jones','janitor'
 4,'Joe','Dirt','bellhop'
 5,'Lucy','Lou','maid'
-
 
 //Room
 1,0,1
@@ -51,9 +49,6 @@
 3,1500,'credit card','2016-11-22 11:12:01',0
 4,300,'credit card','2016-11-19 11:12:01',0
 5,600,'credit card','2016-11-17 11:12:01',0
-
-
-
 
 //Reservation
 1,1,'2016-11-13 11:12:01','2016-11-14 11:12:01','2016-11-19 11:12:01',1,1,1
