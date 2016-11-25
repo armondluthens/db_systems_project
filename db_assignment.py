@@ -589,6 +589,7 @@ class hotel_mgmt_customer:
 
                 cur.execute("insert into Reservation values ({}, {}, NOW(), '{}', '{}', 0,0,0);".format(self.login_id, rid, check_in_date, check_out_date))
                 self.controller.cnx.commit()
+                print("({}, {}, '{}', '{}', 0,0,0)".format(self.login_id, rid, check_in_date, check_out_date))
                 print("\nYou have successfully made a reservation.\n")
                 return "({}, {}, '{}', '{}', 0,0,0)".format(self.login_id, rid, check_in_date, check_out_date)
 
