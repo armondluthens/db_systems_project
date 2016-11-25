@@ -280,7 +280,7 @@ class hotel_mgmt_employee:
                     cur.execute('select * from Room where room_id={};'.format(res[1]))
                     room = cur.fetchall()[0]
                     cur.execute('select cost from Room_Type where room_type={};'.format(room[2]))
-                    cost = cur.fetchall[0]
+                    cost = cur.fetchall()[0]
                     refund = (res[4].day - res[3].day) * cost
                     print("Refund is: {}".format(refund))
 
