@@ -617,7 +617,7 @@ class hotel_mgmt_customer:
                     for i in range(len(res)):
                         print(i, ": ", res[i])
                     d = raw_input("Select the index of the reservation you wish to delete: ")
-                    if res[d][4].date() == datetime.datetime.today().date():
+                    if res[int(d)][4].date() == datetime.datetime.today().date():
                         raise mysql.connector.InternalError("Can't cancel on same day")
                     cur.execute("delete from Reservation where cid = {} and room_id = {} and reservation_date = '{}';".format(res[int(d)][0], res[int(d)][1], res[int(d)][2]))
 
