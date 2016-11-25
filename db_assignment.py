@@ -566,7 +566,7 @@ class hotel_mgmt_customer:
                 cur.execute("select distinct(room_type) from Room where occupied_status=0;")
                 typesaval = cur.fetchall()
 
-                cur.execute("select * from Reservation where '{}' >= check_in_date and '{}' <= check_out_date;".format(str(check_in_date.date()), str(check_in_date.date())))
+                cur.execute("select * from Reservation where '{}' >= check_in_date and '{}' <= check_out_date;".format(check_in_date, check_in_date)
                 reserved_rooms = cur.fetchall()
 
                 print("Types avaliable:")
