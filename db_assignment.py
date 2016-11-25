@@ -213,7 +213,7 @@ class hotel_mgmt_employee:
                 elif len(res) > 1:
                     print("Multiple Reservations Found, Choose Index of Reservation")
                     for i in range(len(res)):
-                        print(str(i) + ": " str(res[i]))
+                        print(str(i) + ": " + str(res[i]))
                     indx = int(raw_input("Index: "))
                     res = res[indx]
                 else:
