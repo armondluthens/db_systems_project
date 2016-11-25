@@ -221,9 +221,12 @@ class hotel_mgmt_employee:
                 else:
                     res = res[0]
 
+                # check if reservation is allowed to be checked in today
+                if res[3].date() != datetime.datetime.today().date():
+                        raise mysql.connector.InternalError("Can't check in today!")
+
                 cur.execute("update Reservation set checked_in_status=1, check_in_date = NOW() where cid = {} and room_id = {} and reservation_date = '{}';".format(res[0], res[1], res[2]))
 
-                #print("Reservation Checked In: ", res)
                 print("\nReservation Checked In:")
                 for tuple in res:
                     print("Reservation: ", tuple)
@@ -271,6 +274,15 @@ class hotel_mgmt_employee:
 
                 else:
                     res = res[0]
+
+                #check if need refund
+                if res[4].date() < datetime.datetime.today().date():
+                    cur.execute('select * from Room where room_id={};'.format(res[1]))
+                    room = cur.fetchall()[0]
+                    cur.execute('select cost from Room_Type where room_type={};'.format(room[2]))
+                    cost = cur.fetchall[0]
+                    refund = (res[4].day - res[3].day) * cost
+                    print("Refund is: {}".format(refund))
 
                 cur.execute("update Reservation set checked_out_status=1, check_out_date = NOW() where cid = {} and room_id = {} and reservation_date = '{}';".format(res[0], res[1], res[2]))
 
@@ -321,6 +333,9 @@ class hotel_mgmt_employee:
                 else:
                     res = res[0]
 
+                if res[5] != 0:
+                    raise mysql.connector.InternalError('Room already serviced')
+
                 cur.execute("update House_Keeping set completion_status=1, description='{}' where room_id={} and date_of_service='{}';".format(discript, res[0], res[1]))
 
                 print("Set Serviced: ", room, assigned_id)
@@ -332,7 +347,7 @@ class hotel_mgmt_employee:
                 return res
 
             except mysql.connector.InternalError as e:
-                print "failed to check out: ", e
+                print "failed to mark serviced: ", e
                 try:
                     self.controller.cnx.rollback()
                 except mysql.connector.InternalError as e:
@@ -550,24 +565,32 @@ class hotel_mgmt_customer:
 
                 cur.execute("select distinct(room_type) from Room where occupied_status=0;")
                 typesaval = cur.fetchall()
+
+                cur.execute("select * from Reservation where '{}' >= check_in_date and '{}' <= check_out_date;".format(str(check_in_date.date()), str(check_in_date.date())))
+                reserved_rooms = cur.fetchall()
+
                 print("Types avaliable:")
                 for i in typesaval:
                     cur.execute("select * from Room_Type where room_type={};".format(i[0]))
                     print(i, ": ", cur.fetchall())
-                r = int(raw_input("Select index of preferred room type: "))
+                room_type = int(raw_input("Select index of preferred room type: "))
+
+                cur.execute("select room_type, room_id from Room where occupied_status=0;")
+                rooms_aval = cur.fetchall()
 
                 rid = None
-                for i in typesaval:
-                    print(i)
-                    if int(r) == i[0]:
-                        rid = i[0]
+                for i in rooms_aval:
+                    if room_type == i[0] and i[1] not in [r[1] for r in reserved_rooms]:
+                        rid = i[1]
                         break
 
+                if rid == None:
+                    raise mysql.connector.InternalError("No rooms of type avaliable on date")
+
                 cur.execute("insert into Reservation values ({}, {}, NOW(), '{}', '{}', 0,0,0);".format(self.login_id, rid, check_in_date, check_out_date))
-                print("Room Reserved")
                 self.controller.cnx.commit()
                 print("\nYou have successfully made a reservation.\n")
-                return "Success"
+                return "({}, {}, '{}', '{}', 0,0,0)".format(self.login_id, rid, check_in_date, check_out_date)
 
             except mysql.connector.InternalError as e:
                 print "failed to find reservations: ", e
@@ -594,6 +617,8 @@ class hotel_mgmt_customer:
                     for i in range(len(res)):
                         print(i, ": ", res[i])
                     d = raw_input("Select the index of the reservation you wish to delete: ")
+                    if res[d][4].date() == datetime.datetime.today().date():
+                        raise mysql.connector.InternalError("Can't cancel on same day")
                     cur.execute("delete from Reservation where cid = {} and room_id = {} and reservation_date = '{}';".format(res[int(d)][0], res[int(d)][1], res[int(d)][2]))
 
                     print("\nSuccessful Cancelation.")
@@ -637,11 +662,6 @@ if __name__ == '__main__':
     mgr.check_in(1,1)
     mgr.check_out(1,1)
     mgr.mark_serviced(5,5,"Cleaned the room")
-    #print("mgr.rooms_occupied:", mgr.rooms_occupied())
-    #print("mgr.housekeeping:", mgr.housekeeping())
-    #print("mgr.check_in:", mgr.check_in(1,1))
-    #print("mgr.check_out:", mgr.check_out(1,1))
-    #print("mgr.mark_serviced:", mgr.mark_serviced(5,5,"Cleaned the room"))
 
     print("\n")
     print("Customer Initialized")
@@ -652,8 +672,16 @@ if __name__ == '__main__':
     cust.my_reservations()
     cust.reserve()
     cust.cancel()
-    #print("cust.rooms_available:", cust.rooms_available())
-    #print("cust.cost_at_checkout:", cust.cost_at_checkout())
-    #print("cust.my_reservations:", cust.my_reservations())
-    #print("cust.reserve:", cust.reserve())
-    #print("cust.cancel:", cust.cancel())
+
+    ## Test Cases
+    ## ## Check in
+    ## ## ## should fail
+    mgr.check_in(1,6)
+    ## ## ## should pass
+    mgr.check_in(1,7)
+
+    ## ## Check out
+    ## ## ## no refund
+    mgr.check_in(1,6)
+    ## ## ## should refund
+    mgr.check_in(1,7)
