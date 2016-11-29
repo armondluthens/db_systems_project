@@ -2,6 +2,9 @@ import mysql.connector
 from mysql.connector import errorcode
 import datetime
 
+from multiprocessing import Process
+import sys
+
 
 class hotel_mgmt_control:
     '''
@@ -592,6 +595,54 @@ class hotel_mgmt_customer:
                     pass
                 return None
 
+
+    def reserve_test(self, check_in_date, check_out_date, room_type):
+        if self.logged_in:
+            try:
+                self.controller.cnx.start_transaction()
+                cur = self.controller.cnx.cursor()
+                
+                #check_in_date = raw_input("Please select check in date (YYYY-MM-DD): ")
+                #check_out_date = raw_input("Please select check out date (YYYY-MM-DD): ")
+            
+                cur.execute("select distinct(room_type) from Room where occupied_status=0;")
+                typesaval = cur.fetchall()
+                
+                cur.execute("select * from Reservation where '{}' >= check_in_date and '{}' <= check_out_date;".format(check_in_date, check_in_date))
+                reserved_rooms = cur.fetchall()
+                
+                print("Types avaliable:")
+                for i in typesaval:
+                    cur.execute("select * from Room_Type where room_type={};".format(i[0]))
+                    print(str(i) + ": " + str(cur.fetchall()))
+                #room_type = int(raw_input("Select index of preferred room type: "))
+                
+                cur.execute("select room_type, room_id from Room where occupied_status=0;")
+                rooms_aval = cur.fetchall()
+                
+                rid = None
+                for i in rooms_aval:
+                    if room_type == i[0] and i[1] not in [r[1] for r in reserved_rooms]:
+                        rid = i[1]
+                        break
+    
+                if rid == None:
+                    raise mysql.connector.InternalError("No rooms of type avaliable on date")
+                
+                cur.execute("insert into Reservation values ({}, {}, NOW(), '{}', '{}', 0,0,0);".format(self.login_id, rid, check_in_date, check_out_date))
+                self.controller.cnx.commit()
+                print("({}, {}, '{}', '{}', 0,0,0)".format(self.login_id, rid, check_in_date, check_out_date))
+                print("\nYou have successfully made a reservation.\n")
+                return "({}, {}, '{}', '{}', 0,0,0)".format(self.login_id, rid, check_in_date, check_out_date)
+            
+            except mysql.connector.InternalError as e:
+                print "failed to find reservations: ", e
+                try:
+                    self.controller.cnx.rollback()
+                except mysql.connector.InternalError as e:
+                    pass
+                return None
+
     '''
     Hotel customer side function to cancel a reservation.
     Must be logged in to execute the query. If query fails,
@@ -623,7 +674,40 @@ class hotel_mgmt_customer:
                 return res
 
             except mysql.connector.InternalError as e:
-                print "failed to cancle reservation: ", e
+                print "failed to cancel reservation: ", e
+                try:
+                    self.controller.cnx.rollback()
+                except mysql.connector.InternalError as e:
+                    pass
+                return None
+
+    def cancel_test(self, d):
+        if self.logged_in:
+            try:
+                self.controller.cnx.start_transaction()
+                cur = self.controller.cnx.cursor()
+                cur.execute("select * from Reservation where cid = {};".format(self.login_id))
+                res = cur.fetchall()
+            
+                if len(res) > 0:
+                    for i in range(len(res)):
+                        print(str(i) + ": " + str(res[i]))
+                #d = raw_input("Select the index of the reservation you wish to delete: ")
+                    if res[int(d)][4].date() == datetime.datetime.today().date():
+                        raise mysql.connector.InternalError("Can't cancel on same day")
+                    cur.execute("delete from Reservation where cid = {} and room_id = {} and reservation_date = '{}';".format(res[int(d)][0], res[int(d)][1], res[int(d)][2]))
+                    
+                    print("\nSuccessful Cancelation.")
+                    return res[int(d)]
+                else:
+                    print("No Reservations Found")
+                    return None
+    
+                self.controller.cnx.commit()
+                return res
+            
+            except mysql.connector.InternalError as e:
+                print "failed to cancel reservation: ", e
                 try:
                     self.controller.cnx.rollback()
                 except mysql.connector.InternalError as e:
@@ -658,22 +742,60 @@ if __name__ == '__main__':
     print("\n")
     print("Customer Initialized")
     cust = hotel_mgmt_customer(ctrl,1)
-
+    print("Customer 2 Initialized")
+    cust2 = hotel_mgmt_customer(ctrl,2)
+    
+    
     cust.rooms_available()
+    
     cust.cost_at_checkout()
     cust.my_reservations()
-    cust.reserve()
+    #cust.reserve()
     cust.cancel()
+    
+    
 
     ## Test Cases
-    ## ## Check in
-    ## ## ## should fail
+    #trying to cancel on the same day test
+    cust.cancel_test(1)
+    
+    #make reservation
+    cust.reserve_test('2016-05-05', '2016-06-07', 1)
+    
+    #reserving a reservation thats already made should fail
+    cust.reserve_test('2016-05-05', '2016-06-07', 1)
+
+    #Two customers make the same reservation at the same time on different threads
+    p1 = Process(target = cust.reserve_test('2016-07-07', '2016-07-011', 1))
+    p1.start()
+    p2 = Process(target = cust2.reserve_test('2016-07-07', '2016-07-011', 1))
+    p2.start()
+
+
+    #check in a member that is already checked in
     mgr.check_in(1,6)
+
     ## ## ## should pass
     mgr.check_in(1,7)
 
     ## ## Check out
     ## ## ## no refund
-    mgr.check_in(1,6)
+    mgr.check_out(1,6)
     ## ## ## should refund
-    mgr.check_in(1,7)
+    mgr.check_out(1,7)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
