@@ -614,7 +614,7 @@ class hotel_mgmt_customer:
                 print("Types avaliable:")
                 for i in typesaval:
                     cur.execute("select * from Room_Type where room_type={};".format(i[0]))
-                    print(str(i) + ": " + str(cur.fetchall()))
+                    # print(str(i) + ": " + str(cur.fetchall()))
                 #room_type = int(raw_input("Select index of preferred room type: "))
 
                 cur.execute("select room_type, room_id from Room where occupied_status=0;")
@@ -771,8 +771,8 @@ if __name__ == '__main__':
 
     #Two customers make the same reservation at the same time on different threads
     p1 = Process(target = cust.reserve_test('2016-07-07', '2016-07-011', 1))
-    p1.start()
     p2 = Process(target = cust2.reserve_test('2016-07-07', '2016-07-011', 1))
+    p1.start()
     p2.start()
 
 
