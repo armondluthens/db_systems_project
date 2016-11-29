@@ -700,9 +700,11 @@ class hotel_mgmt_customer:
                     cur.execute("delete from Reservation where cid = {} and room_id = {} and reservation_date = '{}';".format(res[int(d)][0], res[int(d)][1], res[int(d)][2]))
 
                     print("\nSuccessful Cancelation.")
+                    self.controller.cnx.commit()
                     return res[int(d)]
                 else:
                     print("No Reservations Found")
+                    self.controller.cnx.commit()
                     return None
 
                 self.controller.cnx.commit()
