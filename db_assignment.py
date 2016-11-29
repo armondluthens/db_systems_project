@@ -225,7 +225,7 @@ class hotel_mgmt_employee:
 
                 cur.execute("update Reservation set checked_in_status=1, check_in_date = NOW() where cid = {} and room_id = {} and reservation_date = '{}';".format(res[0], res[1], res[2]))
 
-                print("\nReservation Checked In: " + str(t) + "\n")
+                print("\nReservation Checked In: " + str(res) + "\n")
 
                 self.controller.cnx.commit()
                 return res
