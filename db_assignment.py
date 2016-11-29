@@ -669,6 +669,7 @@ class hotel_mgmt_customer:
                     return res[int(d)]
                 else:
                     print("No Reservations Found")
+                    self.controller.cnx.commit()
                     return None
 
                 self.controller.cnx.commit()
