@@ -760,16 +760,21 @@ if __name__ == '__main__':
 
 
     ## Test Cases
+    print("Test Cases\n--------------\n")
     #trying to cancel on the same day test
+    print("trying to cancel on the same day test")
     cust.cancel_test(1)
 
     #make reservation
+    print("make reservation")
     cust.reserve_test('2016-05-05', '2016-06-07', 1)
 
     #reserving a reservation thats already made should fail
+    print("reserving a reservation thats already made should fail")
     cust.reserve_test('2016-05-05', '2016-06-07', 1)
 
     #Two customers make the same reservation at the same time on different threads
+    print("Two customers make the same reservation at the same time on different threads")
     p1 = Process(target = cust.reserve_test('2016-07-07', '2016-07-011', 1))
     p2 = Process(target = cust2.reserve_test('2016-07-07', '2016-07-011', 1))
     p1.start()
@@ -777,13 +782,17 @@ if __name__ == '__main__':
 
 
     #check in a member that is already checked in
+    print("check in a member that is already checked in")
     mgr.check_in(1,6)
 
     ## ## ## should pass
+    print("should pass")
     mgr.check_in(1,7)
 
     ## ## Check out
     ## ## ## no refund
+    print("no refund")
     mgr.check_out(1,6)
     ## ## ## should refund
+    print("should refund")
     mgr.check_out(1,7)
